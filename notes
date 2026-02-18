@@ -1,6 +1,9 @@
-User: I created keys in my local and   i copied public to aws instance and private to github secrets
-how it is working?
-why it requires my local machines keyss??
+create a aws ec2
+install docker and docker compose
+copy public key from local to authorised key
+add public ip in github secrets
+add pvt keys to github secrets
+
 
 GitHub Copilot: Optimizing tool selection...I'll examine your GitHub Actions workflow to explain how the SSH key setup works. 
 
