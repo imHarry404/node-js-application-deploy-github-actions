@@ -1,0 +1,39 @@
+User: I created keys in my local and   i copied public to aws instance and private to github secrets
+how it is working?
+why it requires my local machines keyss??
+
+GitHub Copilot: Optimizing tool selection...I'll examine your GitHub Actions workflow to explain how the SSH key setup works. 
+
+Read [](file:///Users/hariomkumar/Downloads/Projects/node-app-deploy-githu-actions/.github/workflows/deploy.yaml)
+
+Here's how your SSH key setup works:
+
+## How It Works
+
+**The SSH Authentication Flow:**
+
+1. **GitHub Actions runner** (Ubuntu instance) needs to connect to your **AWS instance** via SSH
+2. When connecting, GitHub Actions provides your **private key** (from `secrets.SSH_KEY`)
+3. The private key signs the connection attempt
+4. Your AWS instance verifies this signature using the **public key** you added there
+5. If they match → authentication successful → deployment proceeds
+
+## Why Your Local Machine's Keys Are Used
+
+You generated the key pair on your local machine, but **you're not using your local machine to deploy**. Instead:
+
+- Your local machine was just the **generation point** for the keys
+- Your **private key** (secret) goes to GitHub so the GitHub Actions runner can use it
+- Your **public key** goes to AWS to recognize connections signed by that private key
+
+Think of it like a lock & key system:
+- 🔓 **Public key on AWS** = the lock
+- 🔑 **Private key in GitHub Secrets** = the key
+- When GitHub Actions runs, it uses the key to open the lock on your AWS instance
+
+This is actually **more secure** than using your local machine's keys because:
+- Your private key never needs to leave GitHub (or the GitHub Actions runner's temporary environment)
+- You can revoke these specific keys anytime without affecting your local access
+- It's isolated to just this deployment workflow
+
+Does this clarify the flow? Would you like me to explain any other part of the deployment setup?
